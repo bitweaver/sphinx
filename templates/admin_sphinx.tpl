@@ -16,8 +16,8 @@
 			<ul>
 			{foreach from=$sphinxIndexes key=indexId item=index}
 				<li>
-					<h2>{$index.name}</h2>
-					<div<em>{$index.host}:{$index.port}</em></div>
+					<h2>{$index.index_title}</h2>
+					<div<em>{$index.index_name} @ {$index.host}:{$index.port}</em></div>
 				</li>
 			{foreachelse}
 				<li>{tr}No indexes have been created.{/tr}</li>
@@ -29,21 +29,28 @@
 			<div class="row">
 				{formlabel label="Index Name"}
 				{forminput}
-					<input name="name" type="text" value="{$editIndex.name}" />
+					<input name="index_title" type="text" value="{$editIndex.name|default:$smarty.request.index_name}" />
+					{formhelp note="This title will be displayed to users, it should be nice and human readable."}
+				{/forminput}
+			</div>
+			<div class="row">
+				{formlabel label="Index Name"}
+				{forminput}
+					<input name="index_name" type="text" value="{$editIndex.name|default:$smarty.request.index_name}" />
 					{formhelp note="This must be the name of the index as specified in your sphinx.conf on the sphinx host"}
 				{/forminput}
 			</div>
 			<div class="row">
 				{formlabel label="Sphinx Host"}
 				{forminput}
-					<input name="host" type="text" value="{$editIndex.host}" />
+					<input name="host" type="text" value="{$editIndex.host|default:$smarty.request.host}" />
 					{formhelp note="The Internet host address running the search daemon with the above index."}
 				{/forminput}
 			</div>
 			<div class="row">
 				{formlabel label="Sphinx Port"}
 				{forminput}
-					<input name="port" type="text" value="{$editIndex.port|default:'3312'}" style="width:3em" />
+					<input name="port" type="text" value="{$editIndex.port|default:$smarty.request.port|default:'3312'}" style="width:3em" />
 					{formhelp note="The port on which the sphinx daemon is running, default is 3312"}
 				{/forminput}
 			</div>

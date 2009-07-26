@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.2 2009/07/26 04:58:18 spiderr Exp $
  * @package sphinx
  **/
 
@@ -36,8 +36,13 @@ class SphinxSystem extends SphinxClient {
 	}
 
 	function verifyIndex( &$pParamHash ) {
-		if( !empty( $pParamHash['name'] ) ) {
-			$pParamHash['index_store']['name'] = $pParamHash['name']; 
+		if( !empty( $pParamHash['index_title'] ) ) {
+			$pParamHash['index_store']['index_title'] = $pParamHash['index_title']; 
+		} else {
+			$this->mErrors['store_title'] = tra( "Index title was not speficied." );
+		}
+		if( !empty( $pParamHash['index_name'] ) ) {
+			$pParamHash['index_store']['index_name'] = $pParamHash['index_name']; 
 		} else {
 			$this->mErrors['store_name'] = tra( "Index name was not speficied." );
 		}

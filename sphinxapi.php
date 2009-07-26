@@ -1,7 +1,7 @@
 <?php
 
 //
-// $Id: sphinxapi.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+// $Id: sphinxapi.php,v 1.2 2009/07/26 04:58:18 spiderr Exp $
 //
 
 //
@@ -1607,5 +1607,5 @@ class SphinxClient
 }
 
 //
-// $Id: sphinxapi.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+// $Id: sphinxapi.php,v 1.2 2009/07/26 04:58:18 spiderr Exp $
 //

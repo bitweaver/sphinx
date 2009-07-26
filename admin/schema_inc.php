@@ -6,8 +6,9 @@ $tables = array(
 	// name and value are reserved database names and should be changed for something else
 	'sphinx_indexes' => "
 		index_id I4 NOTNULL PRIMARY,
-		name C(50) NOTNULL,
-		host C(50) NOTNULL,
+		index_title C(250) NOTNULL,
+		index_name C(250) NOTNULL,
+		host C(250) NOTNULL,
 		port I4 NOTNULL
 	"
 );
