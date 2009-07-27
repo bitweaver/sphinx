@@ -16,6 +16,10 @@
 			<ul>
 			{foreach from=$sphinxIndexes key=indexId item=index}
 				<li>
+					<div class="floaticon">
+						<a href="{$smarty.server.REQUEST_URI}&sidx={$indexId}">{biticon iname="accessories-text-editor"}</a>
+						{biticon iname="edit-delete"}
+					</div>
 					<h2>{$index.index_title}</h2>
 					<div<em>{$index.index_name} @ {$index.host}:{$index.port}</em></div>
 				</li>
@@ -52,6 +56,13 @@
 				{forminput}
 					<input name="port" type="text" value="{$editIndex.port|default:$smarty.request.port|default:'3312'}" style="width:3em" />
 					{formhelp note="The port on which the sphinx daemon is running, default is 3312"}
+				{/forminput}
+			</div>
+			<div class="row">
+				{formlabel label="Custom Results Processor"}
+				{forminput}
+					<input name="port" type="text" value="{$editIndex.result_processor_function|default:$smarty.request.result_processor_function}" />
+					{formhelp note="This is the name of a custom PHP function used to process the results that will be displayed to the user. The default process assumes the Sphinx documentID is a content_id"}
 				{/forminput}
 			</div>
 			<div class="row submit">

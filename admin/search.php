@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.1 2009/07/26 04:58:18 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.2 2009/07/27 13:10:25 spiderr Exp $
  * @package sphinx
  **/
 
@@ -43,8 +43,8 @@ if( !empty( $_REQUEST['ssearch'] ) ) {
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$cl->GetLastError() ;
 	} else {
-	}
 vd( $res );
+	}
 }
 
 $gBitSmarty->assign( 'indexOptions', $indexOptions );
