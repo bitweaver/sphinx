@@ -1,6 +1,6 @@
 {strip}
 {if $editIndex}
-	{assign var=editTabTitle value="Edit Index"}
+	{assign var=editTabTitle value="Edit Index: `$editIndex.index_title`"}
 {else}
 	{assign var=editTabTitle value="Create Index"}
 {/if}
@@ -17,11 +17,11 @@
 			{foreach from=$sphinxIndexes key=indexId item=index}
 				<li>
 					<div class="floaticon">
-						<a href="{$smarty.server.REQUEST_URI}&sidx={$indexId}">{biticon iname="accessories-text-editor"}</a>
-						{biticon iname="edit-delete"}
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&edit_sidx={$indexId}">{biticon iname="accessories-text-editor"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&delete_sidx={$indexId}">{biticon iname="edit-delete"}</a>
 					</div>
 					<h2>{$index.index_title}</h2>
-					<div<em>{$index.index_name} @ {$index.host}:{$index.port}</em></div>
+					<div<em>{$index.index_name} @ {$index.host}:{$index.port} [{$index.result_processor_function}]</em></div>
 				</li>
 			{foreachelse}
 				<li>{tr}No indexes have been created.{/tr}</li>
@@ -33,14 +33,14 @@
 			<div class="row">
 				{formlabel label="Index Name"}
 				{forminput}
-					<input name="index_title" type="text" value="{$editIndex.name|default:$smarty.request.index_name}" />
+					<input name="index_title" type="text" value="{$editIndex.index_title|default:$smarty.request.index_title}" />
 					{formhelp note="This title will be displayed to users, it should be nice and human readable."}
 				{/forminput}
 			</div>
 			<div class="row">
 				{formlabel label="Index Name"}
 				{forminput}
-					<input name="index_name" type="text" value="{$editIndex.name|default:$smarty.request.index_name}" />
+					<input name="index_name" type="text" value="{$editIndex.index_name|default:$smarty.request.index_name}" />
 					{formhelp note="This must be the name of the index as specified in your sphinx.conf on the sphinx host"}
 				{/forminput}
 			</div>
@@ -61,7 +61,7 @@
 			<div class="row">
 				{formlabel label="Custom Results Processor"}
 				{forminput}
-					<input name="port" type="text" value="{$editIndex.result_processor_function|default:$smarty.request.result_processor_function}" />
+					<input name="result_processor_function" type="text" value="{$editIndex.result_processor_function|default:$smarty.request.result_processor_function}" />
 					{formhelp note="This is the name of a custom PHP function used to process the results that will be displayed to the user. The default process assumes the Sphinx documentID is a content_id"}
 				{/forminput}
 			</div>

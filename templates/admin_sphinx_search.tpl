@@ -7,10 +7,18 @@
 
 	<div class="body">
 
+		{formfeedback hash=$feedback}
 		{form}
 			<div class="row">
+				{formlabel label="Search Terms"}
 				{forminput}
 					<input type="text" name="ssearch" value="{$smarty.request.ssearch}" />
+				{/forminput}
+			<div>
+
+			<div class="row">
+				{formlabel label="Index"}
+				{forminput}
 					{html_options name="sidx" options=$indexOptions}
 				{/forminput}
 			<div>

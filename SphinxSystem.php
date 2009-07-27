@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.2 2009/07/26 04:58:18 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.3 2009/07/27 14:03:53 spiderr Exp $
  * @package sphinx
  **/
 
@@ -35,6 +35,10 @@ class SphinxSystem extends SphinxClient {
 		return $this->mDb->getAssoc( "SELECT index_id AS hash_key, spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi " );
 	}
 
+	function getIndex( $pIndexId ) {
+		return $this->mDb->getRow( "SELECT spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi WHERE `index_id`=?", array( (int)$pIndexId ) );
+	}
+
 	function verifyIndex( &$pParamHash ) {
 		if( !empty( $pParamHash['index_title'] ) ) {
 			$pParamHash['index_store']['index_title'] = $pParamHash['index_title']; 
@@ -56,6 +60,14 @@ class SphinxSystem extends SphinxClient {
 		} else {
 			$this->mErrors['store_port'] = tra( "Sphinx server port number was not speficied." );
 		}
+		if( !empty( $pParamHash['result_processor_function'] ) ) {
+			$pParamHash['index_store']['result_processor_function'] = $pParamHash['result_processor_function']; 
+		}
+		if( empty( $this->mErrors ) && empty( $pParamHash['index_id'] ) ) {
+			if( $indexId = $this->mDb->query( "SELECT `index_id` FROM `".BIT_DB_PREFIX."sphinx_indexes` WHERE `host`=? AND `port`=? AND `index_name`=?", array( $pParamHash['host'], $pParamHash['port'], $pParamHash['index_name'] ) ) ) {
+				$this->mErrors['store_name'] = tra( "The index with this name, host and port has already been created." );
+			}
+		}
 		return( count( $this->mErrors ) === 0 );
 	}
 
@@ -69,5 +81,9 @@ class SphinxSystem extends SphinxClient {
 			}
 		}
 		return( count( $this->mErrors ) === 0 );
+	}
+
+	function expungeIndex( $pIndexId ) {
+		$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."sphinx_indexes` WHERE `index_id`=?", array( (int)$pIndexId ) );
 	}
 }

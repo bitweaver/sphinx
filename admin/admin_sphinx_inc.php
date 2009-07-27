@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/admin_sphinx_inc.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/admin_sphinx_inc.php,v 1.2 2009/07/27 14:03:54 spiderr Exp $
  * @package sphinx
  **/
 
@@ -21,12 +21,21 @@ global $gSphinxSystem;
 
 $feedback = array();
 
+if( !empty( $_REQUEST['feedback'] ) ) {
+	$feedback = $_REQUEST['feedback'];
+}
+
 if( !empty( $_REQUEST["sphinx_save_index"] )) {
 	if( $gSphinxSystem->saveIndex( $_REQUEST ) ) {
-		$feedback['success' ] = tra( 'Index saved' );
+		bit_redirect( KERNEL_PKG_URL.'admin/index.php?page='.SPHINX_PKG_NAME.'&feedback[success]='.urlencode( tra( 'Index Saved' ) ) );
 	} else {
 		$feedback['error' ] = $gSphinxSystem->mErrors;
 	}
+} elseif( !empty( $_REQUEST["delete_sidx"] )) {
+	$gBitUser->verifyTicket();
+	$gSphinxSystem->expungeIndex( $_REQUEST["delete_sidx"] );
+} elseif( !empty( $_REQUEST["edit_sidx"] )) {
+	$gBitSmarty->assign( 'editIndex', $gSphinxSystem->getIndex( $_REQUEST["edit_sidx"] ) );
 }
 
 $gBitSmarty->assign( 'sphinxIndexes', $gSphinxSystem->getIndexList() );

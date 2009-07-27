@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.2 2009/07/27 13:10:25 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.3 2009/07/27 14:03:54 spiderr Exp $
  * @package sphinx
  **/
 
@@ -31,7 +31,7 @@ if( !empty( $_REQUEST["sphinx_save_index"] )) {
 }
 
 foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
-	$indexOptions[$i] = "$index[index_title] ($index[index_name] @ $index[host]:$index[port]";;
+	$indexOptions[$i] = "$index[index_title] ($index[index_name] @ $index[host]:$index[port] $index[result_processor_function])";
 }
 
 if( !empty( $_REQUEST['ssearch'] ) ) {
@@ -41,7 +41,7 @@ if( !empty( $_REQUEST['ssearch'] ) ) {
 
 	$res = $gSphinxSystem->Query( $_REQUEST['ssearch'], $indexes[$_REQUEST['sidx']]['index_name'] );
 	if ($res === false) {
-	    $feedback['error'] = "Search Failure: ".$cl->GetLastError() ;
+	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
 	} else {
 vd( $res );
 	}
