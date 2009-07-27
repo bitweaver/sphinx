@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.3 2009/07/27 14:03:54 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.4 2009/07/27 16:19:09 spiderr Exp $
  * @package sphinx
  **/
 
@@ -42,8 +42,6 @@ if( !empty( $_REQUEST['ssearch'] ) ) {
 	$res = $gSphinxSystem->Query( $_REQUEST['ssearch'], $indexes[$_REQUEST['sidx']]['index_name'] );
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
-	} else {
-vd( $res );
 	}
 }
 
