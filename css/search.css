@@ -4,5 +4,8 @@
 .searchresults ol li {margin:1em;}
 .searchresults ol h3 {font-size:medium;}
 .searchresults ol p {max-width:42em;margin:0;word-spacing:.3em;}
+li.norecords			{font-weight:normal;}
+.norecords p		{padding-bottom:1em}
+.norecords ul li	{margin:0;padding:0;}
 .searchmatch 		{background-color:#e5fec5}
 #ssearchinput		{width:30em;}

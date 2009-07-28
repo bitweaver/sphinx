@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.5 2009/07/28 00:25:37 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.6 2009/07/28 16:36:07 spiderr Exp $
  * @package sphinx
  **/
 
@@ -34,11 +34,12 @@ class SphinxSystem extends SphinxClient {
 	}
 
 	function Query ( $query, $index="*", $comment="", $pResultsProcessor="sphinx_liberty_results" ) {
-		$ret = parent::Query ( $query, $index, $comment );
-		$ret['query'] = $query;
-		$ret['index'] = $index;
-		if( !empty( $pResultsProcessor ) ) {
-			$ret = $pResultsProcessor( $ret );
+		if( $ret = parent::Query ( $query, $index, $comment ) ) {
+			$ret['query'] = $query;
+			$ret['index'] = $index;
+			if( !empty( $pResultsProcessor ) ) {
+				$ret = $pResultsProcessor( $ret );
+			}
 		}
 		return $ret;
 	}
@@ -71,6 +72,9 @@ class SphinxSystem extends SphinxClient {
 			$pParamHash['index_store']['port'] = $pParamHash['port']; 
 		} else {
 			$this->mErrors['store_port'] = tra( "Sphinx server port number was not speficied." );
+		}
+		if( !empty( $pParamHash['result_display_tpl'] ) ) {
+			$pParamHash['index_store']['result_display_tpl'] = $pParamHash['result_display_tpl']; 
 		}
 		if( !empty( $pParamHash['result_processor_function'] ) ) {
 			$pParamHash['index_store']['result_processor_function'] = $pParamHash['result_processor_function']; 

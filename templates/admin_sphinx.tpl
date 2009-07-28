@@ -21,7 +21,7 @@
 						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&delete_sidx={$indexId}">{biticon iname="edit-delete"}</a>
 					</div>
 					<h2>{$index.index_title}</h2>
-					<div<em>{$index.index_name} @ {$index.host}:{$index.port} [{$index.result_processor_function}]</em></div>
+					<div><em>{$index.index_name} @ {$index.host}:{$index.port} {if $index.result_processor_function || $index.result_display_tpl}[{$index.result_processor_function}{if $index.result_display_tpl} -> {$index.result_display_tpl}{/if}]{/if}</em></div>
 				</li>
 			{foreachelse}
 				<li>{tr}No indexes have been created.{/tr}</li>
@@ -62,7 +62,14 @@
 				{formlabel label="Custom Results Processor"}
 				{forminput}
 					<input name="result_processor_function" type="text" value="{$editIndex.result_processor_function|default:$smarty.request.result_processor_function}" />
-					{formhelp note="This is the name of a custom PHP function used to process the results that will be displayed to the user. The default process assumes the Sphinx documentID is a content_id"}
+					{formhelp note="OPTIONAL - This is the name of a custom PHP function used to process the results that will be displayed to the user. If no value is entered, the default process assumes the Sphinx documentID is a content_id."}
+				{/forminput}
+			</div>
+			<div class="row">
+				{formlabel label="Custom Results Template"}
+				{forminput}
+					<input name="result_display_tpl" type="text" value="{$editIndex.result_display_tpl|default:$smarty.request.result_display_tpl}" />
+					{formhelp note="OPTIONAL - This is the name of a custom smarty template used to display results the user. You may use enter a full path or a bitweaver standard tpl include, ala: bitpackage:foo/search_bar.tpl . If no value is entered, the default process assumes the Sphinx documentID is a content_id, and general content information will be displayed (title, creator, date, etc.)"}
 				{/forminput}
 			</div>
 			<div class="row submit">

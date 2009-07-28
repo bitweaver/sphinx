@@ -10,7 +10,8 @@ $tables = array(
 		index_name C(250) NOTNULL,
 		host C(250) NOTNULL,
 		port I4 NOTNULL,
-		result_processor_function C(250)
+		result_processor_function C(250),
+		result_display_tpl C(250)
 	"
 );
 

@@ -30,7 +30,7 @@
 
 		{formfeedback hash=$feedback}
 
-		{include file="bitpackage:sphinx/sphinx_results_inc.tpl"}
+		{include file=$searchIndex.result_display_tpl|default:"bitpackage:sphinx/sphinx_results_inc.tpl"}
 
 	</div><!-- end .body -->
 
