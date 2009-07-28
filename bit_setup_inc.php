@@ -1,6 +1,6 @@
 <?
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/bit_setup_inc.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/bit_setup_inc.php,v 1.2 2009/07/28 00:25:37 spiderr Exp $
  * @package sphinx
  **/
 
@@ -31,6 +31,46 @@ if( $gBitSystem->isPackageActive( 'sphinx' )) {
 			'admin_comments_url' => KERNEL_PKG_URL.'admin/index.php?page=sphinx',
 		);
 		$gBitSystem->registerAppMenu( $menuHash );
+	}
+
+	function sphinx_liberty_results( $pResults ) {
+		global $gSphinxSystem, $gBitUser;
+		if( !empty( $pResults['matches'] ) ) {
+			$contentIds = array();
+
+			if( $gSphinxSystem->_arrayresult ) {	
+				for( $i = 0; $i < count( $pResults['matches'] ); $i++ ) {
+					$contentIds[] = $pResults['matches'][$i]['id'];
+				}
+			} else {
+				$contentIds = array_keys( $pResults['matches'] );
+			}
+
+			$listHash = array( 'content_id_list' => $contentIds );
+			$listHash['hash_key'] = 'lc.content_id';
+			$listHash['include_data'] = TRUE;
+			if( $conList = $gBitUser->getContentList( $listHash ) ) {
+				if( $gSphinxSystem->_arrayresult ) {	
+					for( $i = 0; $i < count( $pResults['matches'] ); $i++ ) {
+						$pResults['matches'][$i] = array_merge( $pResults['matches'][$i], $conList[$pResults['matches'][$i]['id']] );
+					}
+				} else {
+					reset( $contentIds );
+					foreach( $contentIds as $conId ) {
+						$conList[$conId]['stripped_data'] = strip_tags( $gBitUser->parseData( $conList[$conId]['data'], $conList[$conId]['format_guid'] ) );
+						$pResults['matches'][$conId] = array_merge( $pResults['matches'][$conId], $conList[$conId] );
+						$excerptSources[] = $conList[$conId]['stripped_data'];
+					}
+					$excerpts = $gSphinxSystem->BuildExcerpts( $excerptSources, $pResults['index'], $pResults['query'] );
+					$i = 0;
+					foreach( $contentIds as $conId ) {
+						$pResults['matches'][$conId]['excerpt'] = $excerpts[$i++];
+					}
+				}
+			}
+		}
+
+		return $pResults;
 	}
 }
 ?>

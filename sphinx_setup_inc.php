@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/sphinx_setup_inc.php,v 1.1 2009/07/24 19:42:49 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/sphinx_setup_inc.php,v 1.2 2009/07/28 00:25:37 spiderr Exp $
  * @package sphinx
  **/
 
@@ -21,5 +21,6 @@ if( $gBitSystem->isPackageActive( 'sphinx' ) ) {
 	require_once( SPHINX_PKG_PATH.'SphinxSystem.php' );
 	global $gSphinxSystem;
 	$gSphinxSystem = new SphinxSystem();
+	$gBitThemes->loadCss( SPHINX_PKG_PATH.'css/search.css' );
 }
 ?>

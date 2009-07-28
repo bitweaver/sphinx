@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.4 2009/07/27 17:09:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.5 2009/07/28 00:25:37 spiderr Exp $
  * @package sphinx
  **/
 
@@ -27,12 +27,19 @@ class SphinxSystem extends SphinxClient {
 		$this->mErrors = array();
 		$this->mInfo = array();
 
+		$this->mIndex = NULL;
+
 		// Startup Sphinx
 		parent::SphinxClient();
 	}
 
-	function Query ( $query, $index="*", $comment="" ) {
+	function Query ( $query, $index="*", $comment="", $pResultsProcessor="sphinx_liberty_results" ) {
 		$ret = parent::Query ( $query, $index, $comment );
+		$ret['query'] = $query;
+		$ret['index'] = $index;
+		if( !empty( $pResultsProcessor ) ) {
+			$ret = $pResultsProcessor( $ret );
+		}
 		return $ret;
 	}
 

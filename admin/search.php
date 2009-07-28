@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.4 2009/07/27 16:19:09 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/search.php,v 1.5 2009/07/28 00:25:37 spiderr Exp $
  * @package sphinx
  **/
 
@@ -35,13 +35,15 @@ foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
 }
 
 if( !empty( $_REQUEST['ssearch'] ) ) {
-	$gSphinxSystem->SetServer( $indexes[$_REQUEST['sidx']]['host'],  (int)$indexes[$_REQUEST['sidx']]['port'] );
+	$gBitSmarty->assign( 'searchIndex', $indexes[$_REQUEST['sidx']] );
 	$gSphinxSystem->SetMatchMode(SPH_MATCH_PHRASE);
-	$gSphinxSystem->SetArrayResult( TRUE );
+	$gSphinxSystem->SetServer( $indexes[$_REQUEST['sidx']]['host'],  (int)$indexes[$_REQUEST['sidx']]['port'] );
 
-	$res = $gSphinxSystem->Query( $_REQUEST['ssearch'], $indexes[$_REQUEST['sidx']]['index_name'] );
+	$res = $gSphinxSystem->Query( $_REQUEST['ssearch'], $indexes[$_REQUEST['sidx']]['index_name'], "",  $indexes[$_REQUEST['sidx']]['result_processor_function'] );
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
+	} else {
+		$gBitSmarty->assign_by_ref( "sphinxResults", $res );
 	}
 }
 
