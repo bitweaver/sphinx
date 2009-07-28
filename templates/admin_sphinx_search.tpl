@@ -8,11 +8,12 @@
 	<div class="body">
 
 		{formfeedback hash=$feedback}
-		{form}
+		 {form method="get"}
 			<div class="row">
 				{formlabel label="Search Terms"}
 				{forminput}
-					<input type="text" name="ssearch" value="{$smarty.request.ssearch|escape}" />
+					<input type="text" name="ssearch" value="{$smarty.request.ssearch|escape}" id="ssearchinput" />
+					<input type="submit" name="search" value="search" />
 				{/forminput}
 			<div>
 
@@ -24,7 +25,6 @@
 			<div>
 
 			<div class="row submit">
-				<input type="submit" name="search" value="search" />
 			</div>
 		{/form}
 
