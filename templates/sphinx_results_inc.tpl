@@ -1,3 +1,4 @@
+{if $sphinxResults}
 <div class="searchresults">
 
 
@@ -10,7 +11,7 @@
 	<ol>
 		{foreach from=$sphinxResults.matches item=result}
 			<li>
-				<h3><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$result.content_id}{if $result.content_type_guid != 'bitcomment'}&amp;highlight={$smarty.request.find|escape:url}{/if}">{if $result.title}{$result.title|escape}{else}[ no title ]{/if}</a></h3>
+				<h3><a href="{$smarty.const.BIT_ROOT_URL}index.php?content_id={$result.content_id}{if $result.content_type_guid != 'bitcomment'}&amp;highlight={$smarty.request.ssearch|escape:url}{/if}">{if $result.title}{$result.title|escape}{else}[ no title ]{/if}</a></h3>
 				<p>{$result.excerpt}</p>
 				<div class="date">[{tr}Relevance{/tr}: {$result.weight}] {tr}{$result.content_description}{/tr}, {tr}Last Modified{/tr} {$result.last_modified|bit_long_datetime}</small></div>
 			</li>
@@ -33,3 +34,4 @@
 	{pagination highlight=$smarty.request.highlight join=$smarty.request.join contentTypes=$smarty.request.contentTypes}
 
 </div>
+{/if}
