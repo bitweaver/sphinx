@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.6 2009/07/28 16:36:07 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.7 2009/07/28 21:05:21 spiderr Exp $
  * @package sphinx
  **/
 
@@ -101,5 +101,15 @@ class SphinxSystem extends SphinxClient {
 
 	function expungeIndex( $pIndexId ) {
 		$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."sphinx_indexes` WHERE `index_id`=?", array( (int)$pIndexId ) );
+	}
+
+	function populateExcerpts( &$pResults, $pExcerptSources ) {
+		$excerptOptions['before_match'] = '<strong class="searchmatch">';
+		$excerptOptions['after_match'] = '</strong>';
+		$excerpts = $this->BuildExcerpts( $pExcerptSources, $pResults['index'], $pResults['query'], $excerptOptions );
+		$i = 0;
+		foreach( array_keys( $pResults['matches'] ) as $k ) {
+			$pResults['matches'][$k]['excerpt'] = $excerpts[$i++];
+		}
 	}
 }

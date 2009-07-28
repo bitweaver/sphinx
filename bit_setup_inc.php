@@ -1,6 +1,6 @@
 <?
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/bit_setup_inc.php,v 1.2 2009/07/28 00:25:37 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/bit_setup_inc.php,v 1.3 2009/07/28 21:05:35 spiderr Exp $
  * @package sphinx
  **/
 
@@ -61,11 +61,7 @@ if( $gBitSystem->isPackageActive( 'sphinx' )) {
 						$pResults['matches'][$conId] = array_merge( $pResults['matches'][$conId], $conList[$conId] );
 						$excerptSources[] = $conList[$conId]['stripped_data'];
 					}
-					$excerpts = $gSphinxSystem->BuildExcerpts( $excerptSources, $pResults['index'], $pResults['query'] );
-					$i = 0;
-					foreach( $contentIds as $conId ) {
-						$pResults['matches'][$conId]['excerpt'] = $excerpts[$i++];
-					}
+					$gSphinxSystem->populateExcerpts( $pResults, $excerptSources );
 				}
 			}
 		}
