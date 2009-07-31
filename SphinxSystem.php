@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.7 2009/07/28 21:05:21 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.8 2009/07/31 06:18:48 spiderr Exp $
  * @package sphinx
  **/
 
@@ -33,23 +33,50 @@ class SphinxSystem extends SphinxClient {
 		parent::SphinxClient();
 	}
 
-	function Query ( $query, $index="*", $comment="", $pResultsProcessor="sphinx_liberty_results" ) {
-		if( $ret = parent::Query ( $query, $index, $comment ) ) {
+	function Query ( $query, $pIndexMixed, $comment="" ) {
+		if( is_numeric( $pIndexMixed ) ) {
+			$searchIndex = $this->getIndex( $pIndexMixed );
+		} elseif( is_string( $pIndexMixed ) ) {
+			$searchIndex['index_name'] = $pIndexMixed;
+		} elseif( is_array( $pIndexMixed ) ) {
+			$searchIndex = &$pIndexMixed;
+		}
+
+	//	$this->SetMatchMode(SPH_MATCH_PHRASE);
+		$this->SetServer( $searchIndex['host'], (int)$searchIndex['port'] );
+		if( !empty( $searchIndex['index_options']['field_weights'] ) ) {
+			$this->SetFieldWeights( $searchIndex['index_options']['field_weights'] );
+		}
+		if( !empty( $searchIndex['index_options']['index_weights'] ) ) {
+			$this->SetIndexWeights( $searchIndex['index_options']['index_weights'] );
+		}
+		if( $ret = parent::Query ( $query, $searchIndex['index_name'], $comment ) ) {
 			$ret['query'] = $query;
-			$ret['index'] = $index;
-			if( !empty( $pResultsProcessor ) ) {
-				$ret = $pResultsProcessor( $ret );
+			$ret['index_name'] = $searchIndex['index_name'];
+			if( !empty( $searchIndex['result_processor_function'] ) ) {
+				$ret = $searchIndex['result_processor_function']( $ret );
 			}
 		}
 		return $ret;
 	}
 
 	function getIndexList() {
-		return $this->mDb->getAssoc( "SELECT index_id AS hash_key, spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi " );
+		if( $ret =  $this->mDb->getAssoc( "SELECT index_id AS hash_key, spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi " ) ) {
+			foreach( array_keys( $ret ) as $k ) {
+				if( !empty( $ret[$k]['index_options'] ) ) {
+					$ret[$k]['index_options'] = unserialize( $ret[$k]['index_options'] );
+				}
+			}
+		}
+		return $ret;
 	}
 
 	function getIndex( $pIndexId ) {
-		return $this->mDb->getRow( "SELECT spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi WHERE `index_id`=?", array( (int)$pIndexId ) );
+		$ret = $this->mDb->getRow( "SELECT spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi WHERE `index_id`=?", array( (int)$pIndexId ) );
+		if( !empty( $ret['index_options'] ) ) {
+			$ret['index_options'] = unserialize( $ret['index_options'] );
+		}
+		return $ret;
 	}
 
 	function verifyIndex( &$pParamHash ) {
@@ -80,9 +107,25 @@ class SphinxSystem extends SphinxClient {
 			$pParamHash['index_store']['result_processor_function'] = $pParamHash['result_processor_function']; 
 		}
 		if( empty( $this->mErrors ) && empty( $pParamHash['index_id'] ) ) {
-			if( $indexId = $this->mDb->query( "SELECT `index_id` FROM `".BIT_DB_PREFIX."sphinx_indexes` WHERE `host`=? AND `port`=? AND `index_name`=?", array( $pParamHash['host'], $pParamHash['port'], $pParamHash['index_name'] ) ) ) {
+			if( $indexId = $this->mDb->GetOne( "SELECT `index_id` FROM `".BIT_DB_PREFIX."sphinx_indexes` WHERE `host`=? AND `port`=? AND `index_name`=?", array( $pParamHash['host'], $pParamHash['port'], $pParamHash['index_name'] ) ) ) {
 				$this->mErrors['store_name'] = tra( "The index with this name, host and port has already been created." );
 			}
+		}
+		$indexOptions = array();
+		foreach( array( 'index_weights', 'field_weights' ) as $opt ) {
+			if( !empty( $pParamHash[$opt] ) && is_string( $pParamHash[$opt] ) && strpos( $pParamHash[$opt], '=' ) ) {
+				if( $lines = split( "\n", $pParamHash[$opt] ) ) {
+					foreach( $lines as $l ) {
+						if( $l = trim( $l ) ) {
+							list( $key, $value )  = split( '=', $l );
+							$indexOptions[$opt][$key] = (int)$value;
+						}
+					}
+				}
+			}
+		}
+		if( !empty( $indexOptions ) ) {
+			$pParamHash['index_store']['index_options'] = serialize( $indexOptions );
 		}
 		return( count( $this->mErrors ) === 0 );
 	}
@@ -106,7 +149,7 @@ class SphinxSystem extends SphinxClient {
 	function populateExcerpts( &$pResults, $pExcerptSources ) {
 		$excerptOptions['before_match'] = '<strong class="searchmatch">';
 		$excerptOptions['after_match'] = '</strong>';
-		$excerpts = $this->BuildExcerpts( $pExcerptSources, $pResults['index'], $pResults['query'], $excerptOptions );
+		$excerpts = $this->BuildExcerpts( $pExcerptSources, $pResults['index_name'], $pResults['query'], $excerptOptions );
 		$i = 0;
 		foreach( array_keys( $pResults['matches'] ) as $k ) {
 			$pResults['matches'][$k]['excerpt'] = $excerpts[$i++];

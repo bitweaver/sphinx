@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/admin_sphinx_inc.php,v 1.2 2009/07/27 14:03:54 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/admin/admin_sphinx_inc.php,v 1.3 2009/07/31 06:18:48 spiderr Exp $
  * @package sphinx
  **/
 
@@ -35,7 +35,18 @@ if( !empty( $_REQUEST["sphinx_save_index"] )) {
 	$gBitUser->verifyTicket();
 	$gSphinxSystem->expungeIndex( $_REQUEST["delete_sidx"] );
 } elseif( !empty( $_REQUEST["edit_sidx"] )) {
-	$gBitSmarty->assign( 'editIndex', $gSphinxSystem->getIndex( $_REQUEST["edit_sidx"] ) );
+	$editIndex = $gSphinxSystem->getIndex( $_REQUEST["edit_sidx"] );
+	if( !empty( $editIndex['index_options'] ) ) {
+		foreach( array_keys( $editIndex['index_options'] ) as $k ) {
+			if( is_array( $editIndex['index_options'][$k] ) ) {
+				$editIndex[$k.'_txt'] = '';
+				foreach( $editIndex['index_options'][$k] as $key => $value ) {
+					$editIndex[$k.'_txt'] .= $key.'='.$value."\n";
+				}
+			}
+		}
+	}
+	$gBitSmarty->assign( 'editIndex', $editIndex );
 }
 
 $gBitSmarty->assign( 'sphinxIndexes', $gSphinxSystem->getIndexList() );

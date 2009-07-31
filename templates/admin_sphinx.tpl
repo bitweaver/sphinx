@@ -72,6 +72,20 @@
 					{formhelp note="OPTIONAL - This is the name of a custom smarty template used to display results the user. You may use enter a full path or a bitweaver standard tpl include, ala: bitpackage:foo/search_bar.tpl . If no value is entered, the default process assumes the Sphinx documentID is a content_id, and general content information will be displayed (title, creator, date, etc.)"}
 				{/forminput}
 			</div>
+			<div class="row">
+				{formlabel label="Field Weighting"}
+				{forminput}
+					<textarea name="field_weights" style="height:6em;">{$editIndex.field_weights_txt|default:$smarty.request.field_weights}</textarea>
+					{formhelp note="OPTIONAL - Enter field weights above, 1 per line, in the format of '<fieldname>=<weight>'. Individual fields in the index (typically columns from your database) can be weighted differently. For example, enter a line above with 'title=5.5' to give a match in the title a weight of 5.5 The default weight for all fields is 1"}
+				{/forminput}
+			</div>
+			<div class="row">
+				{formlabel label="Index Source Weighting"}
+				{forminput}
+					<textarea name="index_weights" style="height:6em;">{$editIndex.index_weights_txt|default:$smarty.request.index_weights}</textarea>
+					{formhelp note="OPTIONAL - Enter index source weights above, 1 per line, in the format of '<sourcename>=<weight>'. If your index has multiple sources, you can weight results from the sources differently. For example, you may have a source 'wikipages=3.0' and 'wikicomments=1.5' to weight hits from pages higher than hits in comments. The default weight is 1."}
+				{/forminput}
+			</div>
 			<div class="row submit">
 				<input type="submit" name="sphinx_save_index" value="{tr}Save Index{/tr}" />
 			</div>
