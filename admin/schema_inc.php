@@ -12,7 +12,8 @@ $tables = array(
 		port I4 NOTNULL,
 		result_processor_function C(250),
 		result_display_tpl C(250),
-		index_options X
+		index_options X,
+		pos F
 	"
 );
 
