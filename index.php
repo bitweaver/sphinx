@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.2 2009/08/03 17:36:57 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.3 2009/08/03 18:13:02 spiderr Exp $
  * @package sphinx
  **/
 
@@ -49,5 +49,5 @@ $gBitSmarty->assign( 'indexOptions', $indexOptions );
 
 $gBitSmarty->assign_by_ref( 'feedback', $feedback );
 
-$gBitSystem->display('bitpackage:sphinx/sphinx_search.tpl','Sphinx Admin Search');
+$gBitSystem->display('bitpackage:sphinx/sphinx_search.tpl','Search');
 ?>
