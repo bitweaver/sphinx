@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.8 2009/07/31 06:18:48 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.9 2009/08/03 17:36:56 spiderr Exp $
  * @package sphinx
  **/
 
@@ -61,7 +61,7 @@ class SphinxSystem extends SphinxClient {
 	}
 
 	function getIndexList() {
-		if( $ret =  $this->mDb->getAssoc( "SELECT index_id AS hash_key, spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi " ) ) {
+		if( $ret =  $this->mDb->getAssoc( "SELECT index_id AS hash_key, spi.* FROM `".BIT_DB_PREFIX."sphinx_indexes` spi ORDER BY `pos` ASC, `index_title` ASC " ) ) {
 			foreach( array_keys( $ret ) as $k ) {
 				if( !empty( $ret[$k]['index_options'] ) ) {
 					$ret[$k]['index_options'] = unserialize( $ret[$k]['index_options'] );
@@ -103,6 +103,7 @@ class SphinxSystem extends SphinxClient {
 		if( !empty( $pParamHash['result_display_tpl'] ) ) {
 			$pParamHash['index_store']['result_display_tpl'] = $pParamHash['result_display_tpl']; 
 		}
+		$pParamHash['index_store']['pos'] = (!empty( $pParamHash['pos'] ) ? (int)$pParamHash['pos'] : NULL); 
 		if( !empty( $pParamHash['result_processor_function'] ) ) {
 			$pParamHash['index_store']['result_processor_function'] = $pParamHash['result_processor_function']; 
 		}

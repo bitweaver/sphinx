@@ -59,6 +59,13 @@
 				{/forminput}
 			</div>
 			<div class="row">
+				{formlabel label="Listing Order"}
+				{forminput}
+					<input name="pos" type="text" value="{$editIndex.pos|default:$smarty.request.pos}" style="width:3em" />
+					{formhelp note="OPTIONAL - Position the index will appear in menus or choices"}
+				{/forminput}
+			</div>
+			<div class="row">
 				{formlabel label="Custom Results Processor"}
 				{forminput}
 					<input name="result_processor_function" type="text" value="{$editIndex.result_processor_function|default:$smarty.request.result_processor_function}" />

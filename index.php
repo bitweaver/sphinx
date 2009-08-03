@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.1 2009/07/31 06:17:57 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.2 2009/08/03 17:36:57 spiderr Exp $
  * @package sphinx
  **/
 
@@ -31,7 +31,7 @@ if( !empty( $_REQUEST["sphinx_save_index"] )) {
 }
 
 foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
-	$indexOptions[$i] = "$index[index_title] ($index[index_name] @ $index[host]:$index[port] $index[result_processor_function])";
+	$indexOptions[$i] = "$index[index_title]";
 }
 
 if( !empty( $_REQUEST['ssearch'] ) ) {
