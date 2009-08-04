@@ -14,6 +14,13 @@ $tables = array(
 		result_display_tpl C(250),
 		index_options X,
 		pos F
+	",
+	'sphinx_search_log' => "
+		index_id I4 NOTNULL PRIMARY,
+		search_phrase C(255) NOTNULL PRIMARY,
+		search_count I4 NOTNULL default 1,
+		last_searched I8,
+		last_searched_ip C(39)
 	"
 );
 

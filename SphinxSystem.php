@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.9 2009/08/03 17:36:56 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/SphinxSystem.php,v 1.10 2009/08/04 05:22:25 spiderr Exp $
  * @package sphinx
  **/
 
@@ -34,6 +34,7 @@ class SphinxSystem extends SphinxClient {
 	}
 
 	function Query ( $query, $pIndexMixed, $comment="" ) {
+		global $gBitDb;
 		if( is_numeric( $pIndexMixed ) ) {
 			$searchIndex = $this->getIndex( $pIndexMixed );
 		} elseif( is_string( $pIndexMixed ) ) {
@@ -53,10 +54,18 @@ class SphinxSystem extends SphinxClient {
 		if( $ret = parent::Query ( $query, $searchIndex['index_name'], $comment ) ) {
 			$ret['query'] = $query;
 			$ret['index_name'] = $searchIndex['index_name'];
-			if( !empty( $searchIndex['result_processor_function'] ) ) {
-				$ret = $searchIndex['result_processor_function']( $ret );
+			$processorFunction = (!empty( $searchIndex['result_processor_function'] ) ? $searchIndex['result_processor_function'] : 'sphinx_liberty_results');
+			if( function_exists( $processorFunction ) ) {
+				$ret = $processorFunction( $ret );
 			}
 		}
+
+		$truncQuery = substr( $query, 0, 250 );
+		$res = $gBitDb->query( "UPDATE `".BIT_DB_PREFIX."sphinx_search_log` SET `last_searched`=?, `last_searched_ip`=?, `search_count`=`search_count`+1 WHERE `search_phrase`=? AND `index_id`=?", array( time(), $_SERVER['REMOTE_ADDR'], $truncQuery, $searchIndex['index_id'] ) );
+		if( !$gBitDb->mDb->Affected_Rows() ) {
+			$gBitDb->query( "INSERT INTO `".BIT_DB_PREFIX."sphinx_search_log` (`last_searched`, `last_searched_ip`, `search_phrase`, `index_id`) VALUES(?,?,?,?)", array( time(), $_SERVER['REMOTE_ADDR'], $truncQuery, $searchIndex['index_id'] ) );
+		}
+
 		return $ret;
 	}
 
@@ -156,4 +165,40 @@ class SphinxSystem extends SphinxClient {
 			$pResults['matches'][$k]['excerpt'] = $excerpts[$i++];
 		}
 	}
+}
+
+function sphinx_liberty_results( $pResults ) {
+	global $gSphinxSystem, $gBitUser;
+	if( !empty( $pResults['matches'] ) ) {
+		$contentIds = array();
+
+		if( $gSphinxSystem->_arrayresult ) {	
+			for( $i = 0; $i < count( $pResults['matches'] ); $i++ ) {
+				$contentIds[] = $pResults['matches'][$i]['id'];
+			}
+		} else {
+			$contentIds = array_keys( $pResults['matches'] );
+		}
+
+		$listHash = array( 'content_id_list' => $contentIds );
+		$listHash['hash_key'] = 'lc.content_id';
+		$listHash['include_data'] = TRUE;
+		if( $conList = $gBitUser->getContentList( $listHash ) ) {
+			if( $gSphinxSystem->_arrayresult ) {	
+				for( $i = 0; $i < count( $pResults['matches'] ); $i++ ) {
+					$pResults['matches'][$i] = array_merge( $pResults['matches'][$i], $conList[$pResults['matches'][$i]['id']] );
+				}
+			} else {
+				reset( $contentIds );
+				foreach( $contentIds as $conId ) {
+					$conList[$conId]['stripped_data'] = strip_tags( $gBitUser->parseData( $conList[$conId]['data'], $conList[$conId]['format_guid'] ) );
+					$pResults['matches'][$conId] = array_merge( $pResults['matches'][$conId], $conList[$conId] );
+					$excerptSources[] = $conList[$conId]['stripped_data'];
+				}
+				$gSphinxSystem->populateExcerpts( $pResults, $excerptSources );
+			}
+		}
+	}
+
+	return $pResults;
 }
