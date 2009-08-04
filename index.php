@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.3 2009/08/03 18:13:02 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.4 2009/08/04 18:27:20 spiderr Exp $
  * @package sphinx
  **/
 
@@ -34,10 +34,10 @@ foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
 	$indexOptions[$i] = "$index[index_title]";
 }
 
-if( !empty( $_REQUEST['ssearch'] ) ) {
+if( !empty( $_REQUEST['q'] ) ) {
 	$gBitSmarty->assign( 'searchIndex', $indexes[$_REQUEST['sidx']] );
 
-	$res = $gSphinxSystem->Query( $_REQUEST['ssearch'], $indexes[$_REQUEST['sidx']] );
+	$res = $gSphinxSystem->Query( $_REQUEST['q'], $indexes[$_REQUEST['sidx']] );
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
 	} else {
