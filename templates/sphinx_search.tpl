@@ -1,6 +1,6 @@
 <div class="floaticon">{bithelp}</div>
 
-<div class="admin sphinx">
+<div class="search sphinx">
 	<div class="body">
 
 		 {form method="get"}

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.4 2009/08/04 18:27:20 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.5 2009/08/05 00:35:40 spiderr Exp $
  * @package sphinx
  **/
 
@@ -35,6 +35,7 @@ foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
 }
 
 if( !empty( $_REQUEST['q'] ) ) {
+	$_SESSION['sidx'] = $_REQUEST['sidx'];
 	$gBitSmarty->assign( 'searchIndex', $indexes[$_REQUEST['sidx']] );
 
 	$res = $gSphinxSystem->Query( $_REQUEST['q'], $indexes[$_REQUEST['sidx']] );
