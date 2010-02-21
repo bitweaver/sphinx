@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.6 2010/02/21 06:16:31 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.7 2010/02/21 06:17:57 spiderr Exp $
  * @package sphinx
  **/
 
@@ -16,7 +16,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 
-require_once( '../kernel/bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 require_once( SPHINX_PKG_PATH.'sphinx_setup_inc.php' );
 global $gSphinxSystem;
 
