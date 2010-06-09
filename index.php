@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_sphinx/index.php,v 1.7 2010/02/21 06:17:57 spiderr Exp $
+ * $Header$
  * @package sphinx
  **/
 
