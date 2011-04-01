@@ -173,6 +173,7 @@ class SphinxSystem extends SphinxClient {
 
 function sphinx_liberty_results( $pResults ) {
 	global $gSphinxSystem, $gBitUser;
+	$genericContent = new LibertyContent();
 	if( !empty( $pResults['matches'] ) ) {
 		$contentIds = array();
 
@@ -187,7 +188,7 @@ function sphinx_liberty_results( $pResults ) {
 		$listHash = array( 'content_id_list' => $contentIds );
 		$listHash['hash_key'] = 'lc.content_id';
 		$listHash['include_data'] = TRUE;
-		if( $conList = $gBitUser->getContentList( $listHash ) ) {
+		if( $conList = $genericContent->getContentList( $listHash ) ) {
 			if( $gSphinxSystem->_arrayresult ) {	
 				for( $i = 0; $i < count( $pResults['matches'] ); $i++ ) {
 					$pResults['matches'][$i] = array_merge( $pResults['matches'][$i], $conList[$pResults['matches'][$i]['id']] );
@@ -195,7 +196,7 @@ function sphinx_liberty_results( $pResults ) {
 			} else {
 				reset( $contentIds );
 				foreach( $contentIds as $conId ) {
-					$conList[$conId]['stripped_data'] = strip_tags( $gBitUser->parseData( $conList[$conId]['data'], $conList[$conId]['format_guid'] ) );
+					$conList[$conId]['stripped_data'] = strip_tags( $genericContent->parseData( $conList[$conId]['data'], $conList[$conId]['format_guid'] ) );
 					$pResults['matches'][$conId] = array_merge( $pResults['matches'][$conId], $conList[$conId] );
 					$excerptSources[] = $conList[$conId]['stripped_data'];
 				}
