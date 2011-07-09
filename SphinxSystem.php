@@ -166,7 +166,8 @@ class SphinxSystem extends SphinxClient {
 		$excerpts = $this->BuildExcerpts( $pExcerptSources, $pResults['index_name'], $pResults['query'], $excerptOptions );
 		$i = 0;
 		foreach( array_keys( $pResults['matches'] ) as $k ) {
-			$pResults['matches'][$k]['excerpt'] = $excerpts[$i++];
+			$pResults['matches'][$k]['excerpt'] = (!empty( $excerpts[$i] ) ? $excerpts[$i]: '');
+			$i++;
 		}
 	}
 }
