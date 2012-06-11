@@ -174,7 +174,7 @@ class SphinxSystem extends SphinxClient {
 
 function sphinx_liberty_results( $pResults ) {
 	global $gSphinxSystem, $gBitUser;
-	$genericContent = new LibertyContent();
+	$genericContent = new LibertyMime();
 	if( !empty( $pResults['matches'] ) ) {
 		$contentIds = array();
 
