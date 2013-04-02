@@ -18,7 +18,7 @@
 				<li>
 					<div class="floaticon">
 						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&amp;edit_sidx={$indexId}">{biticon iname="accessories-text-editor"}</a>
-						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&amp;delete_sidx={$indexId}&amp;tk={$gBitUser->mTicket}">{biticon iname="edit-delete"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$smarty.const.SPHINX_PKG_NAME}&amp;delete_sidx={$indexId}&amp;tk={$gBitUser->mTicket}">{booticon iname="icon-trash"}</a>
 					</div>
 					<h2>{$index.index_title}</h2>
 					<div><em>{$index.index_name} @ {$index.host}:{$index.port} {if $index.result_processor_function || $index.result_display_tpl}[{$index.result_processor_function}{if $index.result_display_tpl} -> {$index.result_display_tpl}{/if}]{/if}</em></div>
