@@ -94,7 +94,7 @@
 				{/forminput}
 			</div>
 			<div class="control-group submit">
-				<input type="submit" name="sphinx_save_index" value="{tr}Save Index{/tr}" />
+				<input type="submit" class="btn" name="sphinx_save_index" value="{tr}Save Index{/tr}" />
 			</div>
 		{/jstab}
 	{/jstabs}

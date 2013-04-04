@@ -9,7 +9,7 @@
 				{forminput style="display:inline;width:70%;"}
 					{html_options name="sidx" options=$indexOptions selected=$smarty.request.sidx} for 
 					<input type="text" name="q" value="{$smarty.request.q|escape}" id="qinput" />
-					<input type="submit" name="search" value="search" />
+					<input type="submit" class="btn" name="search" value="search" />
 					{formhelp note="Enter search terms in the entry field above."}
 				{/forminput}
 			<div>
