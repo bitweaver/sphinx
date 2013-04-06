@@ -1,5 +1,8 @@
 {strip}
-<ul>
-	<li><a class="item" href="{$smarty.const.ILIKE_PKG_URL}" title="{tr}Search{/tr}" >{tr}Search{/tr}</a></li>
-</ul>
+<form class="form-search" action="{$smarty.const.SPHINX_PKG_URL}" method="get">
+  <div class="input-append">
+    <input type="text" name="q" class="span2 search-query">
+    <button type="submit" class="btn">{tr}{$packageMenuTitle}{/tr}</button>
+  </div>
+</form>
 {/strip}
