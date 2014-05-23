@@ -13,7 +13,7 @@
 				{formlabel label="Search Terms"}
 				{forminput}
 					<input type="text" name="ssearch" value="{$smarty.request.ssearch|escape}" id="ssearchinput" />
-					<input type="submit" class="btn" name="search" value="search" />
+					<input type="submit" class="btn btn-default" name="search" value="search" />
 				{/forminput}
 			<div>
 
