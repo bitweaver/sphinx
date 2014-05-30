@@ -9,7 +9,7 @@
 
 		{formfeedback hash=$feedback}
 		 {form method="get"}
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Search Terms"}
 				{forminput}
 					<input type="text" name="ssearch" value="{$smarty.request.ssearch|escape}" id="ssearchinput" />
@@ -17,14 +17,14 @@
 				{/forminput}
 			<div>
 
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Index"}
 				{forminput}
 					{html_options name="sidx" options=$indexOptions selected=$smarty.request.sidx}
 				{/forminput}
 			<div>
 
-			<div class="control-group submit">
+			<div class="form-group submit">
 			</div>
 		{/form}
 
