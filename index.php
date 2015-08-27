@@ -22,6 +22,8 @@ global $gSphinxSystem;
 
 $feedback = array();
 
+$gBitSystem->verifyPackage( 'sphinx' );
+
 if( !empty( $_REQUEST["sphinx_save_index"] )) {
 	if( $gSphinxSystem->saveIndex( $_REQUEST ) ) {
 		$feedback['success' ] = tra( 'Index saved' );
