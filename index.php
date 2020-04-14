@@ -36,7 +36,7 @@ foreach( $indexes = $gSphinxSystem->getIndexList() as $i=>$index ) {
 	$indexOptions[$i] = "$index[index_title]";
 }
 
-if( !empty( $_REQUEST['q'] ) ) {
+if( !empty( $_REQUEST['q'] ) && BitBase::verifyIdParameter( $_REQUEST, 'sidx' ) ) {
 	$_SESSION['sidx'] = $_REQUEST['sidx'];
 	$gBitSmarty->assign( 'searchIndex', $indexes[$_REQUEST['sidx']] );
 
