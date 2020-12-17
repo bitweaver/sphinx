@@ -5,8 +5,8 @@
 //
 
 //
-// Copyright (c) 2001-2015, Andrew Aksyonoff
-// Copyright (c) 2008-2015, Sphinx Technologies Inc
+// Copyright (c) 2001-2016, Andrew Aksyonoff
+// Copyright (c) 2008-2016, Sphinx Technologies Inc
 // All rights reserved
 //
 // This program is free software; you can redistribute it and/or modify
@@ -853,9 +853,8 @@ class SphinxClient
 	{
 		assert ( is_string($attribute) );
 		assert ( is_array($values) );
-		assert ( count($values) );
 
-		if ( is_array($values) && count($values) )
+		if ( count($values) )
 		{
 			foreach ( $values as $value )
 				assert ( is_numeric($value) );
@@ -1787,7 +1786,6 @@ class SphinxClient
 			return false;
 		}
 
-		$res = substr ( $response, 4 ); // just ignore length, error handling, etc
 		$p = 0;
 		list ( $rows, $cols ) = array_values ( unpack ( "N*N*", substr ( $response, $p, 8 ) ) ); $p += 8;
 
