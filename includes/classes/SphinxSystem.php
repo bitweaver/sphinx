@@ -197,7 +197,7 @@ function sphinx_liberty_results( $pResults ) {
 			} else {
 				reset( $contentIds );
 				foreach( $contentIds as $conId ) {
-					$conList[$conId]['stripped_data'] = strip_tags( $genericContent->parseData( $conList[$conId]['data'], $conList[$conId]['format_guid'] ) );
+					$conList[$conId]['stripped_data'] = strip_tags( LibertyContent::parseDataHash( $conList[$conId] ) );
 					$pResults['matches'][$conId] = array_merge( $pResults['matches'][$conId], $conList[$conId] );
 					$excerptSources[] = $conList[$conId]['stripped_data'];
 				}
