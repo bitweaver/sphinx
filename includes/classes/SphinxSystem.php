@@ -16,7 +16,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 
-require_once( SPHINX_PKG_PATH.'sphinxapi.php' );
+require_once( SPHINX_PKG_CLASS_PATH.'sphinxapi.php' );
 
 class SphinxSystem extends SphinxClient {
 
@@ -33,16 +33,16 @@ class SphinxSystem extends SphinxClient {
 		parent::SphinxClient();
 	}
 
-	function Query ( $query, $pIndexMixed, $comment="" ) {
+	function Query ( $query, $index="*", $comment="" ) {
 		global $gBitDb;
 		$ret = array();
 
-		if( is_numeric( $pIndexMixed ) ) {
-			$searchIndex = $this->getIndex( $pIndexMixed );
-		} elseif( is_string( $pIndexMixed ) ) {
-			$searchIndex['index_name'] = $pIndexMixed;
-		} elseif( is_array( $pIndexMixed ) ) {
-			$searchIndex = &$pIndexMixed;
+		if( is_numeric( $index ) ) {
+			$searchIndex = $this->getIndex( $index );
+		} elseif( is_string( $index ) ) {
+			$searchIndex['index_name'] = $index;
+		} elseif( is_array( $index ) ) {
+			$searchIndex = &$index;
 		}
 
 	//	$this->SetMatchMode(SPH_MATCH_PHRASE);
