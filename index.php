@@ -16,7 +16,7 @@
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
 
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 require_once( SPHINX_PKG_INCLUDE_PATH.'sphinx_setup_inc.php' );
 global $gSphinxSystem;
 
