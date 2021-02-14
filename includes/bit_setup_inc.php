@@ -18,7 +18,7 @@
 
 $registerHash = array(
 	'package_name' => 'sphinx',
-	'package_path' => dirname( __FILE__ ).'/',
+	'package_path' => dirname( dirname( __FILE__ ) ).'/',
 );
 $gBitSystem->registerPackage( $registerHash );
 
