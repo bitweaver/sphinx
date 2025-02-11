@@ -62,7 +62,7 @@ class SphinxSystem extends SphinxClient {
 			}
 		}
 
-		if( !empty( $searchIndex['index_id'] ) ) {
+		if( BitBase::verifyIdParameter( $searchIndex, 'index_id' ) ) {
 			$truncQuery = substr( $query, 0, 250 );
 			$res = $gBitDb->query( "UPDATE `".BIT_DB_PREFIX."sphinx_search_log` SET `last_searched`=?, `last_searched_ip`=?, `search_count`=`search_count`+1 WHERE `search_phrase`=? AND `index_id`=?", array( time(), $_SERVER['REMOTE_ADDR'], $truncQuery, $searchIndex['index_id'] ) );
 			if( !$gBitDb->mDb->Affected_Rows() ) {
