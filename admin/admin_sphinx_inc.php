@@ -51,5 +51,5 @@ if( !empty( $_REQUEST["sphinx_save_index"] )) {
 
 $gBitSmarty->assign( 'sphinxIndexes', $gSphinxSystem->getIndexList() );
 
-$gBitSmarty->assign_by_ref( 'feedback', $feedback );
+$gBitSmarty->assignByRef( 'feedback', $feedback );
 ?>

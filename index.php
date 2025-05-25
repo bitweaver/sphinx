@@ -44,13 +44,13 @@ if( !empty( $_REQUEST['q'] ) && BitBase::verifyIdParameter( $_REQUEST, 'sidx' ) 
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
 	} else {
-		$gBitSmarty->assign_by_ref( "sphinxResults", $res );
+		$gBitSmarty->assignByRef( "sphinxResults", $res );
 	}
 }
 
 $gBitSmarty->assign( 'indexOptions', $indexOptions );
 
-$gBitSmarty->assign_by_ref( 'feedback', $feedback );
+$gBitSmarty->assignByRef( 'feedback', $feedback );
 
 $gBitSystem->display('bitpackage:sphinx/sphinx_search.tpl','Search');
 ?>

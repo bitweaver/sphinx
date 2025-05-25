@@ -43,13 +43,13 @@ if( !empty( $_REQUEST['ssearch'] ) ) {
 	if ($res === false) {
 	    $feedback['error'] = "Search Failure: ".$gSphinxSystem->GetLastError() ;
 	} else {
-		$gBitSmarty->assign_by_ref( "sphinxResults", $res );
+		$gBitSmarty->assignByRef( "sphinxResults", $res );
 	}
 }
 
 $gBitSmarty->assign( 'indexOptions', $indexOptions );
 
-$gBitSmarty->assign_by_ref( 'feedback', $feedback );
+$gBitSmarty->assignByRef( 'feedback', $feedback );
 
 $gBitSystem->display('bitpackage:sphinx/admin_sphinx_search.tpl','Sphinx Admin Search');
 ?>
